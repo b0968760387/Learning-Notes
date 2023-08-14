@@ -1,0 +1,17 @@
+問題: 從一個無序的array當中找到第K大(小)的元素
+
+215.找出第K大的元素
+
+1.sort 方法
+TC = O nlogn
+SC = O n
+
+2. min heap
+TC = O nlogK 
+SC = O K
+
+3. Quickselect (Hoare's selection algorithm)
+TC = O(n)
+SC = O(n)
+
+因為其平均TC是O(n)，所以才特別重要的演算法。
