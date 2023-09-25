@@ -1,0 +1,51 @@
+基本操作
+oracle: to_date() , count(distinct )
+        union all
+        substr(name_a,l,r) 
+        concat()
+        lower() upper()
+        listagg(col_a,'分隔符') within group (order by...)   <- 類似'分隔符'.join功能
+
+
+pandas  .count()
+        .to_frame() 轉換series成df
+        .nunique() 計算出現的set大小
+        .sort_values()
+        .upper() .lower()
+        .drop_duplicates()
+        .query('col_a == ???')   <- 篩選某些行條件用
+
+
+1.取值時候
+oracle: coalesce(col_name,'若為空值時的預設取值')
+pandas: fillna(0) <- 將空值預設為0
+        isna()    <- 檢查是否為空值
+
+2.合併方法
+oracle: select * from
+        a left join b
+        on a.XXX = b.XXX
+pandas: pd.merge(left,right,how,on)
+
+3.找某順序列之間範圍
+oracle:column over (order by col_a asc[dsc] rows 1 preceding[following])                                    <- 往前到目前行數
+                   (order by col_a rows (between) unbounded preceding and 1 following)                      <- between 是兩個範圍時才用(單純數值是行數)
+                   (order by col_a rows range between col_a *0.8 preceding and col_a*1.2 following)         <- between 兩個範圍時使用(數值不是行數，在日期或數值格式col時可使用)
+                   (order by col_a rows range between interval '1' month preceding and '2' month following) <- 當是使用時間範圍時可用interval 
+        lag(col_a,1) 前一行
+        first_value(col_a) 第一行
+
+4.分組groupby
+oracle: select col_a, avg(???) over (order by ....?)
+        from table
+        group by col_a
+
+        分完組後每組產生一個值，在做聚合函數時可以跨col引用 
+        例如: case when col_c = 1 then col_b*2 else col_b/2 end as new_col
+
+pandas: groupby('col_a').agg(
+        new_col = ('col_b',聚合函數)).reset_index()      <- reset_index() 讓groupby的col回歸df
+
+        分完組後每組產生一個值，在做聚合函數時無法跨col引用
+        所以如果有某些當C欄...B欄就...的跨欄位操作時無法做到，要先篩選完才groupby
+
