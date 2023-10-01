@@ -31,4 +31,26 @@ SC = O (n)     <= 最壞情況下臨時空間需要2/n，一般情況下只需�
 優化:   改進的點在於優化merge sort的比較邏輯，不再需要一一比較每次都要花O(n)時間，使用名為Gallop(馳騁)的技術
         馳騁=倍增搜尋法(exponential search)，找到介於(2^(k)-1)與(2^(k-1)-1)的範圍後，再使用BS找到精確位置，使原本
 	O(n)的比較次數降低為O(logn)
-		  
+
+2867. 
+
+快速創建一個2~n的質數表
+def eratosthenes(n):
+    is_prime = [True] * (n + 1)
+    for i in range(2, int(n ** 0.5) + 1):
+        if is_prime[i]:
+            for j in range(i * i, n + 1, i):
+                is_prime[j] = False
+    return [x for x in range(2, n + 1) if is_prime[x]]
+print(eratosthenes(120))
+
+Union 集合模板
+def Union(x,y) :
+    if Father[x] < Father[y]:
+        Father[y] = Father[x]
+    else:
+        Father[x] = Father[y]
+def Findfather(x):
+    if Father[x] != x:
+        Father[x] = Findfather[Father[x]]
+    return Father[x]

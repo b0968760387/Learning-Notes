@@ -13,7 +13,14 @@ pandas  .count()
         .sort_values()
         .upper() .lower()
         .drop_duplicates()
-        .query('col_a == ???')   <- 篩選某些行條件用
+        .query('col_a == ???')                          <- 用於篩選某些特定row df.query('column1 > 5') 裡面可以用f-string
+        .assign(new_col = df.A-df.B)                    <- 回傳基於原本DF且創建新的new_col列，用于添加或更新列
+        .eval('new_col = A-B')                          <- 回傳基於原本DF且創建新的new_col列，用于元素级的运算和新列的生成
+        .cumsum .cumprod()                              <- 累積相加、相乘
+        .drop_duplicates(subset=[''],keep='first')      <- 刪除某些row(指定col重複的)，預設是會留重複的第一個
+        .duplicates(subset=[''],keep='first')           <- 跟上面很像，但是是回傳是否需要刪除
+        .str.contains(r'pattern1|pattern2')             <- 用於搜尋str中是否有某些pattern
+        .str.match('pattern')                           <- 類似於contains 但可以找到更細節的東西
 
 
 1.取值時候
@@ -48,4 +55,15 @@ pandas: groupby('col_a').agg(
 
         分完組後每組產生一個值，在做聚合函數時無法跨col引用
         所以如果有某些當C欄...B欄就...的跨欄位操作時無法做到，要先篩選完才groupby
+
+5. 正則表達式
+oracle: regexp_like(col_a, pattern)
+
+pandas: .str.contains(r'pattern1|pattern2')             <- 用於搜尋str中是否有某些pattern
+        .str.match('pattern')                           <- 類似於contains 但可以找到更細節的東西
+
+6. 排序操作
+oracle: select person_name,sum(weight) over (order by turn rows unbounded preceding) total_weight
+        from queue order by total_weight desc
+        這是一個先垗turn排序 做累加後，在將累積結果反序回傳的例子
 
