@@ -5,7 +5,24 @@ oracle: to_date() , count(distinct )
         concat()
         lower() upper()
         listagg(col_a,'分隔符') within group (order by...)   <- 類似'分隔符'.join功能
-
+        MOD( id, 2)  找餘數
+        創建一個預設表
+        with tables as(
+                select 'High Salary' as category,
+                        50001 as min_salary,
+                        1000000 as max_salary
+                from dual
+                union 
+                select 'Average Salary' as category,
+                        20000 as min_salary,
+                        50000 as max_salary
+                from dual
+                union
+                select 'Low Salary' as category,
+                        0 as min_salary,
+                        19999 as max_salary
+                from dual
+                )
 
 pandas  .count()
         .to_frame() 轉換series成df
@@ -13,7 +30,7 @@ pandas  .count()
         .sort_values()
         .upper() .lower()
         .drop_duplicates()
-        .query('col_a == ???')                          <- 用於篩選某些特定row df.query('column1 > 5') 裡面可以用f-string
+        .query('col_a == ???')                          <- 用於篩選某些特定row df.query('column1 > 5') 裡面可以用f-stringgit
         .assign(new_col = df.A-df.B)                    <- 回傳基於原本DF且創建新的new_col列，用于添加或更新列
         .eval('new_col = A-B')                          <- 回傳基於原本DF且創建新的new_col列，用于元素级的运算和新列的生成
         .cumsum .cumprod()                              <- 累積相加、相乘
@@ -35,7 +52,7 @@ oracle: select * from
 pandas: pd.merge(left,right,how,on)
 
 3.找某順序列之間範圍
-oracle:column over (order by col_a asc[dsc] rows 1 preceding[following])                                    <- 往前到目前行數
+oracle: column over (order by col_a asc[dsc] rows 1 preceding[following])                                    <- 往前到目前行數
                    (order by col_a rows (between) unbounded preceding and 1 following)                      <- between 是兩個範圍時才用(單純數值是行數)
                    (order by col_a rows range between col_a *0.8 preceding and col_a*1.2 following)         <- between 兩個範圍時使用(數值不是行數，在日期或數值格式col時可使用)
                    (order by col_a rows range between interval '1' month preceding and '2' month following) <- 當是使用時間範圍時可用interval 
@@ -67,3 +84,9 @@ oracle: select person_name,sum(weight) over (order by turn rows unbounded preced
         from queue order by total_weight desc
         這是一個先垗turn排序 做累加後，在將累積結果反序回傳的例子
 
+7. 排名操作 (通常是分組後)
+oracle: dense_rank() over (partition by '分組依據' order by '排序依據' [desc])           <= 1,1,2
+        rank()                                                                          <= 1,1,3
+        row_number()                                                                    <= 1,2,3
+
+pandas: groupby('').rank(method='dense',ascending=False)
